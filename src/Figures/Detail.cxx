@@ -3,9 +3,9 @@
 
 CollisionData Detail::getCollisionData() {
   CollisionData data;
-  data.circles.push_back(CollisionCircle(start, size/2));
-  data.circles.push_back(CollisionCircle(start + VPoint(size/2,0), size/4));
-  data.rectangles.push_back(CollisionRectangle(start - VPoint(size/5, size/5), start + VPoint(size/5, size/5)));
+  data.circles.push_back(CollisionCircle(start, size));
+  data.circles.push_back(CollisionCircle(start + VPoint(size*2,0), size));
+  data.rectangles.push_back(CollisionRectangle(start - VPoint(0,-10), start + VPoint(size, 10)));
   return data;
 }
 sf::Color Detail::getColor() {

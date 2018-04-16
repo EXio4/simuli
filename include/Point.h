@@ -17,31 +17,49 @@ public:
   typename T::Type x;
   typename T::Type y;
 
+  Point(typename T::Type v) : x(v), y(v) {}
   Point(typename T::Type x, typename T::Type y) : x(x), y(y) {}
   Point() : x(0), y(0) {}
-
-  Point operator+(const Point<T>& other) {
-    return Point(x + other.x, y + other.y);
-  }
-  Point operator-(const Point<T>& other) {
-    return Point(x - other.x, y - other.y);
-  }
-
-  Point& operator+=(const Point<T>& other) {
-    x += other.x; y += other.y;
-    return *this;
-  }
-
-  Point& operator-=(const Point<T>& other) {
-    x -= other.x; y -= other.y;
-    return *this;
-  }
-
-  bool out() {
-    return (x < 0) || (y < 0);
-  }
-
 };
+
+template <typename T>
+Point<T> operator+(const Point<T>& self, const Point<T>& other) {
+  return Point<T>(self.x + other.x, self.y + other.y);
+}
+template <typename T>
+Point<T> operator-(const Point<T>& self, const Point<T>& other) {
+  return Point<T>(self.x - other.x, self.y - other.y);
+}
+template <typename T>
+Point<T> operator*(const Point<T>& self, const Point<T>& other) {
+  return Point<T>(self.x * other.x, self.y * other.y);
+}
+template <typename T>
+Point<T> operator/(const Point<T>& self, const Point<T>& other) {
+  return Point<T>(self.x / other.x, self.y / other.y);
+}
+
+template <typename T>
+Point<T>& operator+=(Point<T>& self, const Point<T>& other) {
+  self.x += other.x; self.y += other.y;
+  return self;
+}
+template <typename T>
+Point<T>& operator-=(Point<T>& self, const Point<T>& other) {
+  self.x -= other.x; self.y -= other.y;
+  return self;
+}
+template <typename T>
+Point<T>& operator*=(Point<T>& self, const Point<T>& other) {
+  self.x *= other.x; self.y *= other.y;
+  return self;
+}
+template <typename T>
+Point<T>& operator/=(Point<T>& self, const Point<T>& other) {
+  self.x /= other.x; self.y /= other.y;
+  return self;
+}
+
 
 using VPoint = Point<Virtual>;
 using RPoint = Point<Real>;

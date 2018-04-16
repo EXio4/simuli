@@ -53,21 +53,23 @@ void Render::startSimulation() {
 
   while (win.isOpen()) {
     sf::Event event;
+    VPoint mov = (end - start) / VPoint(20);
+
     while (win.pollEvent(event)) {
       switch(event.type) {
         case sf::Event::KeyPressed:
           switch (event.key.code) {
             case sf::Keyboard::Left:
-              move(VPoint(-50, 0));
+              move(mov * VPoint(-1,0));
             break;
             case sf::Keyboard::Right:
-              move(VPoint( 50, 0));
+              move(mov * VPoint( 1,0));
             break;
             case sf::Keyboard::Up:
-              move(VPoint(0, -50));
+              move(mov * VPoint(0,-1));
             break;
             case sf::Keyboard::Down:
-              move(VPoint(0, 50));
+              move(mov * VPoint(0, 1));
             break;
             case sf::Keyboard::A:
               zoom(1.2);
