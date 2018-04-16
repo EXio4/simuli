@@ -5,7 +5,6 @@ project(simuli)
 set(EXECUTABLE_NAME simuli)
 
 set(simuli_SRC
-      src/Object.cxx
       src/Figures/Detail.cxx
       src/Render.cxx
       src/main.cxx)

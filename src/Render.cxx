@@ -7,13 +7,21 @@ void Render::resetCamera() {
   this->end   = VPoint(1280,720);
 }
 
-void Render::zoomIn(float ratio) {
+void Render::zoom(float ratio) {
 
+  VPoint delta = end - start;
+  delta.x *= ratio;
+  delta.y *= ratio;
+
+  delta -= end - start;
+
+  delta.x /= 2;
+  delta.y /= 2;
+
+  start -= delta;
+  end   += delta;
 }
 
-void Render::zoomOut(float ratio) {
-
-}
 
 void Render::move(VPoint dm) {
   start += dm;
@@ -28,6 +36,7 @@ RPoint Render::mapToReal(VPoint v) {
     offset.y *= resolution.y;
     return RPoint(offset.x, offset.y);
 }
+
 
 Render::Render() {
   resetCamera();
@@ -49,16 +58,22 @@ void Render::startSimulation() {
         case sf::Event::KeyPressed:
           switch (event.key.code) {
             case sf::Keyboard::Left:
-              move(VPoint(-100, 0));
+              move(VPoint(-50, 0));
             break;
             case sf::Keyboard::Right:
-              move(VPoint( 100, 0));
+              move(VPoint( 50, 0));
             break;
             case sf::Keyboard::Up:
-              move(VPoint(0, -100));
+              move(VPoint(0, -50));
             break;
             case sf::Keyboard::Down:
-              move(VPoint(0, 100));
+              move(VPoint(0, 50));
+            break;
+            case sf::Keyboard::A:
+              zoom(1.2);
+            break;
+            case sf::Keyboard::Z:
+              zoom(0.8);
             break;
           }
         break;
@@ -77,7 +92,9 @@ void Render::startSimulation() {
 
       for (auto circle : data.circles) {
         RPoint r = mapToReal(circle.center);
-        sf::CircleShape circ(circle.radius);
+        auto rad_scale = mapToReal(circle.center + VPoint(circle.radius,circle.radius)) - r;
+        sf::CircleShape circ(1);
+        circ.setScale(rad_scale.x,rad_scale.y);
         circ.setPosition(r.x, r.y);
         circ.setFillColor(color);
         win.draw(circ);

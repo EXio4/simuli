@@ -15,8 +15,7 @@ private:
 
   void resetCamera();
 
-  void zoomIn(float ratio);
-  void zoomOut(float ratio);
+  void zoom(float ratio);
 
   void move(VPoint dm);
 
