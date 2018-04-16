@@ -9,14 +9,7 @@ void Render::resetCamera() {
 
 void Render::zoom(float ratio) {
 
-  VPoint delta = end - start;
-  delta.x *= ratio;
-  delta.y *= ratio;
-
-  delta -= end - start;
-
-  delta.x /= 2;
-  delta.y /= 2;
+  VPoint delta = ((end - start) * VPoint(ratio) - (end - start)) / VPoint(2);
 
   start -= delta;
   end   += delta;
@@ -29,12 +22,8 @@ void Render::move(VPoint dm) {
 }
 
 RPoint Render::mapToReal(VPoint v) {
-    VPoint offset(v.x - start.x, v.y - start.y);
-    offset.x /= end.x - start.x;
-    offset.y /= end.y - start.y;
-    offset.x *= resolution.x;
-    offset.y *= resolution.y;
-    return RPoint(offset.x, offset.y);
+    VPoint offsetV = VPoint(resolution.x, resolution.y) * (v - start) / (end - start);
+    return RPoint(offsetV.x, offsetV.y);
 }
 
 
@@ -94,7 +83,7 @@ void Render::startSimulation() {
 
       for (auto circle : data.circles) {
         RPoint r = mapToReal(circle.center);
-        auto rad_scale = mapToReal(circle.center + VPoint(circle.radius,circle.radius)) - r;
+        auto rad_scale = mapToReal(circle.center + VPoint(circle.radius)) - r;
         sf::CircleShape circ(1);
         circ.setScale(rad_scale.x,rad_scale.y);
         circ.setPosition(r.x, r.y);
